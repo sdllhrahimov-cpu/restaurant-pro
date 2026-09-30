@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>L'Aura Gastronomy | Hashamatli Restoran & Onlayn Buyurtma</title>
+  <meta name="description"
+    content="L'Aura Gastronomy - Yuksak oshxona san'ati, qovurilgan marmar go'shtlar, dengiz mahsulotlari va tezkor yetkazib berish xizmati. Stol band qilish va ovqat zakaz qilish.">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+  <!-- Ambient Light Orbs -->
+  <div class="ambient-glow ambient-glow-1"></div>
+  <div class="ambient-glow ambient-glow-2"></div>
+
+  <!-- =========================================================================
+       1. NAVIGATION HEADER
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo" id="brandLogo">
+        <div class="logo-monogram">L</div>
+        <div class="logo-text-group">
+          <span class="logo-title">L'AURARestaurant</span>
+          <span class="logo-subtitle">Haute Gastronomy</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link active" data-i18n="nav_home">Bosh sahifa</a></li>
+          <li><a href="#signatureShowcase" class="nav-link" data-i18n="nav_signature">Oshpaz tanlovi</a></li>
+          <li><a href="#menuSection" class="nav-link" data-i18n="nav_menu">Menyu</a></li>
+          <li><a href="#experience" class="nav-link" data-i18n="nav_atmosphere">Atmosfera</a></li>
+          <li><a href="#footer" class="nav-link" data-i18n="nav_contact">Aloqa</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Language Selector -->
+        <div class="lang-selector-dropdown" id="langSelector">
+          <button class="lang-btn" id="langActiveBtn" aria-label="Tilni tanlash" title="Tilni tanlash / Выбрать язык / Choose Language">
+            <span class="lang-flag" id="langActiveFlag">
+              <svg class="svg-flag" viewBox="0 0 32 24" width="20" height="15" style="border-radius: 2px; display: block;">
+                <rect width="32" height="7.5" fill="#0099B5"/>
+                <rect y="7.5" width="32" height="1" fill="#CE1126"/>
+                <rect y="8.5" width="32" height="7" fill="#FFFFFF"/>
+                <rect y="15.5" width="32" height="1" fill="#CE1126"/>
+                <rect y="16.5" width="32" height="7.5" fill="#1EB53A"/>
+                <circle cx="5" cy="4" r="2.2" fill="#FFFFFF"/>
+                <circle cx="5.7" cy="4" r="1.9" fill="#0099B5"/>
+              </svg>
+            </span>
+            <span class="lang-code" id="langActiveCode">UZ</span>
+            <svg class="lang-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <button class="lang-opt active" data-lang="uz">
+              <span class="lang-flag">
+                <svg class="svg-flag" viewBox="0 0 32 24" width="22" height="16" style="border-radius: 3px; display: block; box-shadow: 0 1px 3px rgba(0,0,0,0.4);">
+                  <rect width="32" height="7.5" fill="#0099B5"/>
+                  <rect y="7.5" width="32" height="1" fill="#CE1126"/>
+                  <rect y="8.5" width="32" height="7" fill="#FFFFFF"/>
+                  <rect y="15.5" width="32" height="1" fill="#CE1126"/>
+                  <rect y="16.5" width="32" height="7.5" fill="#1EB53A"/>
+                  <circle cx="5" cy="4" r="2.2" fill="#FFFFFF"/>
+                  <circle cx="5.7" cy="4" r="1.9" fill="#0099B5"/>
+                </svg>
+              </span>
+              <span class="lang-name">O'zbekcha</span>
+            </button>
+            <button class="lang-opt" data-lang="ru">
+              <span class="lang-flag">
+                <svg class="svg-flag" viewBox="0 0 32 24" width="22" height="16" style="border-radius: 3px; display: block; box-shadow: 0 1px 3px rgba(0,0,0,0.4);">
+                  <rect width="32" height="8" fill="#FFFFFF"/>
+                  <rect y="8" width="32" height="8" fill="#0039A6"/>
+                  <rect y="16" width="32" height="8" fill="#D52B1E"/>
+                </svg>
+              </span>
+              <span class="lang-name">Русский</span>
+            </button>
+            <button class="lang-opt" data-lang="en">
+              <span class="lang-flag">
+                <svg class="svg-flag" viewBox="0 0 32 24" width="22" height="16" style="border-radius: 3px; display: block; box-shadow: 0 1px 3px rgba(0,0,0,0.4);">
+                  <clipPath id="uk-clip-nav"><rect width="32" height="24" rx="2"/></clipPath>
+                  <g clip-path="url(#uk-clip-nav)">
+                    <rect width="32" height="24" fill="#012169"/>
+                    <path d="M0,0 L32,24 M32,0 L0,24" stroke="#FFFFFF" stroke-width="4"/>
+                    <path d="M0,0 L32,24 M32,0 L0,24" stroke="#C8102E" stroke-width="2.2"/>
+                    <path d="M16,0 V24 M0,12 H32" stroke="#FFFFFF" stroke-width="6"/>
+                    <path d="M16,0 V24 M0,12 H32" stroke="#C8102E" stroke-width="3.5"/>
+                  </g>
+                </svg>
+              </span>
+              <span class="lang-name">English</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn btn-outline trigger-open-reservation" id="navReservationBtn">
+          <span data-i18n="nav_book">Stol band qilish</span>
+        </button>
+
+        <button class="cart-toggle-btn trigger-open-cart" id="navCartToggle" aria-label="Savatchani ochish">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-badge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. HERO SECTION (r1.jpg Dark Luxury Inspired)
+       ========================================================================= -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span data-i18n="hero_badge">★ Michelin Guide 2026 • 100% Halol</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span data-i18n="hero_title_1">Oliy Dabdaba va</span> <span class="text-gold" data-i18n="hero_title_2">Nozik Did</span>
+        </h1>
+
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
+          Har bir luqmada san'at, har bir lahzada ehtirom. Fransuz va O'rta yer dengizi oshxonasi sirlari. Restoran atmosferasini uyingizga yetkazamiz.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#signatureShowcase" class="btn btn-gold">
+            <span data-i18n="hero_btn_menu">Menyu bilan tanishish</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <button class="btn btn-outline trigger-open-reservation">
+            <span data-i18n="hero_btn_book">Stol band qilish</span>
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label" data-i18n="stat_experience">Yillik Tajriba</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">45+</span>
+            <span class="stat-label" data-i18n="stat_recipes">Mualliflik Retseptlari</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">4.9★</span>
+            <span class="stat-label" data-i18n="stat_rating">Mehmonlar Bahosi</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-plate-wrapper">
+          <img src="./assets/images/hero-salmon.jpg" alt="Glazurlangan Shotlandiya Lososi" class="hero-dish-img">
+          <div class="hero-floating-card">
+            <div class="card-dish-info">
+              <h4>Shotlandiya Lososi Royale</h4>
+              <p>Balsamik sirli sous va yovvoyi o'tlar bilan</p>
+            </div>
+            <div class="card-dish-price">
+              <span class="price-tag">185 000 so'm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       3. FEATURE 1: HORIZONTAL SCROLL DISH SHOWCASE
+       ("ovqatlar menyulari yon tomonga scroll bo'lib menyu ko'rinsin")
+       ========================================================================= -->
+  <section class="horizontal-showcase-section" id="signatureShowcase">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle-pill" data-i18n="sig_subtitle">Oshpaz Durdonalari</span>
+        <h2 class="section-title"><span data-i18n="sig_title">Eksklyuziv Ta'mlar</span> <span class="text-gold" data-i18n="sig_title_gold">Kolleksiyasi</span></h2>
+        <p class="section-desc" data-i18n="sig_scroll_hint">
+          Barcha durdonalarni ko'rish uchun suring →
+        </p>
+      </div>
+
+      <div class="horizontal-scroll-controls">
+        <div class="horizontal-hint">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8L22 12L18 16" />
+            <path d="M6 8L2 12L6 16" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+          </svg>
+          <span>Yon tomonga suring yoki strelkalardan foydalaning</span>
+        </div>
+        <div class="horizontal-nav-btns">
+          <button class="scroll-arrow-btn" id="scrollPrev" aria-label="Oldingi taomlar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="scroll-arrow-btn" id="scrollNext" aria-label="Keyingi taomlar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Horizontal Scroll Track -->
+    <div class="horizontal-track" id="horizontalTrack">
+      <!-- Dynamic cards rendered by JS -->
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="horizontal-progress-wrap">
+      <div class="horizontal-progress-bar" id="horizontalProgressBar"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. FEATURE 2: MORPHING STICKY CATEGORY BAR
+       ("scroll bo'lgandan keyin menyular yeg'ilsin")
+       ========================================================================= -->
+  <div id="morphingNavTrigger" style="height: 1px;"></div>
+
+  <section class="menu-grid-section" id="menuSection">
+    <div class="container">
+
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <span class="section-subtitle-pill" data-i18n="menu_subtitle">To'liq Gastronomik Katalog</span>
+        <h2 class="section-title"><span data-i18n="menu_title">Restoran</span> <span class="text-gold" data-i18n="menu_title_gold">Menyusi</span></h2>
+        <p class="section-desc" data-i18n="hero_subtitle">Kategoriyalarni tanlang va o'zingizga ma'qul lazzatlarni savatchaga qo'shing</p>
+      </div>
+
+      <!-- Morphing Sticky Nav Container -->
+      <div class="morphing-nav-container" id="morphingNav">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+          <ul class="category-filter-list" id="categoryFilters">
+            <!-- Rendered by JS -->
+          </ul>
+
+          <div class="sticky-nav-extras">
+            <input type="text" class="sticky-search-input" id="stickySearchInput" data-i18n="search_placeholder" placeholder="Taom qidirish...">
+            <button class="btn btn-gold btn-icon-only trigger-open-cart" style="width: 36px; height: 36px;"
+              title="Savatcha">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="menu-filter-bar" style="margin-top: 2rem;">
+        <div class="search-box-large">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="menuSearchInput" data-i18n="search_placeholder" placeholder="Taom nomi, masalliqlar yoki retsept qidiring...">
+        </div>
+
+        <div class="calorie-filter-group">
+          <span class="calorie-filter-title">🔥 Kaloriya filtri:</span>
+          <div class="calorie-pills-wrap" id="calorieFilterPills">
+            <button class="cal-filter-btn active" data-cal="all">Barchasi</button>
+            <button class="cal-filter-btn" data-cal="light">🥗 &lt; 400 kkal (Yengil)</button>
+            <button class="cal-filter-btn" data-cal="medium">⚖️ 400 - 600 kkal (O'rtacha)</button>
+            <button class="cal-filter-btn" data-cal="heavy">🥩 &gt; 600 kkal (To'yimli)</button>
+          </div>
+        </div>
+
+        <div style="font-size: 0.9rem; color: var(--text-muted);">
+          Promo-kod mavjud: <strong style="color: var(--accent-gold);">LAURA20</strong> (20% chegirma)
+        </div>
+      </div>
+
+      <!-- Dishes Grid -->
+      <div class="dishes-grid" id="dishesGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5. RESTAURANT ATMOSPHERE & CRAFT (Fine Dining Interior Showcase)
+       ========================================================================= -->
+  <section class="experience-section" id="experience">
+    <div class="container">
+      <!-- Atmosphere Section Header -->
+      <div style="text-align: center; max-width: 780px; margin: 0 auto 2.5rem;">
+        <span class="section-subtitle-pill" data-i18n="exp_subtitle">Restoran Falsafasi & Atmosferasi</span>
+        <h2 class="section-title"><span data-i18n="exp_title">Oliy Darajadagi</span> <span class="text-gold" data-i18n="exp_title_gold">Muhit & Gastronomiya</span></h2>
+        <p style="color: var(--text-muted); line-height: 1.8; font-size: 1.05rem;" data-i18n="exp_desc">
+          L'Aura shunchaki taomlanish maskani emas — bu har bir tamingiz va har bir lahzangiz unutilmas hissiyotga aylanadigan nozik san'at maskanidir. Biz mahsulotlarimizni dunyoning eng nufuzli fermalaridan yangi holda keltiramiz va ularni faqat tabiiy eman o'tini hamda tog' o'tlari bilan pishiramiz.
+        </p>
+      </div>
+
+      <!-- Luxury Restaurant Atmosphere Visual Showcase Card -->
+      <div class="atmosphere-showcase-wrap">
+        <div class="atmosphere-image-card">
+          <img src="./rphoto.jpg" alt="L'Aura Premium Luxury Restaurant Atmosphere" class="atmosphere-main-img" loading="lazy">
+          <div class="atmosphere-overlay"></div>
+          
+          <div class="atmosphere-floating-badge badge-top-left">
+            <span class="amb-badge-icon">👑</span>
+            <div class="amb-badge-text">
+              <span class="amb-badge-title" data-i18n="exp_badge1_title">Haute Fine Dining</span>
+              <span class="amb-badge-sub" data-i18n="exp_badge1_sub">Eksklyuziv VIP zallar va sokin muhit</span>
+            </div>
+          </div>
+
+          <div class="atmosphere-floating-badge badge-bottom-right">
+            <span class="amb-badge-icon">✨</span>
+            <div class="amb-badge-text">
+              <span class="amb-badge-title" data-i18n="exp_badge2_title">Jonli Oqshomlar</span>
+              <span class="amb-badge-sub" data-i18n="exp_badge2_sub">Akkustik jazz va yorug'lik sehri</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features & Reservation Grid -->
+      <div class="experience-grid" style="margin-top: 3rem;">
+        <div>
+          <h3 style="font-size: 1.6rem; margin-bottom: 1.2rem; color: #fff;" data-i18n="exp_craft_title">Mukammallik Har Bir Detalda</h3>
+          <div class="exp-features" style="margin-top: 1rem;">
+            <div class="exp-feature-item">
+              <span class="exp-icon">🔥</span>
+              <h4 data-i18n="feat_fire_title">Jonli Olovda Pishirish</h4>
+              <p data-i18n="feat_fire_desc">Ispaniyaning Xoskar pechida 450°C haroratda tabiiy qovurish uslubi.</p>
+            </div>
+            <div class="exp-feature-item">
+              <span class="exp-icon">🌿</span>
+              <h4 data-i18n="feat_halal_title">Organik & 100% Halol</h4>
+              <p data-i18n="feat_halal_desc">Barcha go'sht va dengiz mahsulotlari qat'iy sifat sertifikatiga ega.</p>
+            </div>
+            <div class="exp-feature-item">
+              <span class="exp-icon">⚡</span>
+              <h4 data-i18n="feat_delivery_title">Issiq Yetkazib Berish</h4>
+              <p data-i18n="feat_delivery_desc">Maxsus termoboxlarda taomning taftini va ko'rinishini saqlagan holda.</p>
+            </div>
+            <div class="exp-feature-item">
+              <span class="exp-icon">🍹</span>
+              <h4 data-i18n="feat_drinks_title">Tabiiy & Yangi Ichimliklar</h4>
+              <p data-i18n="feat_drinks_desc">100% tabiiy mevali limonadlar, yangi siqilgan sharbatlar va sovuq tog' choylari.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="glass-panel" style="padding: 2.5rem; border-color: var(--border-gold);">
+            <h3 style="font-size: 1.8rem; margin-bottom: 0.8rem; color: #fff;" data-i18n="book_card_title">Unutilmas Kechki Ovqat Uchun</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;" data-i18n="book_card_desc">
+              Oila davrasida, ishbilarmonlik uchrashuvi yoki romantik oqshom uchun stolingizni oldindan band qiling.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 1.5rem; color: var(--accent-gold);">📍</span>
+                <div>
+                  <strong style="color: #fff; display: block;" data-i18n="book_address_label">Restoran manzili:</strong>
+                  <span style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="book_address_val">Toshkent sh., Amir Temur shoh ko'chasi, 88</span>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 1.5rem; color: var(--accent-gold);">🕒</span>
+                <div>
+                  <strong style="color: #fff; display: block;" data-i18n="book_hours_label">Ish vaqti:</strong>
+                  <span style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="book_hours_val">Har kuni: 11:00 dan 23:30 gacha</span>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <span style="font-size: 1.5rem; color: var(--accent-gold);">📞</span>
+                <div>
+                  <strong style="color: #fff; display: block;" data-i18n="book_phone_label">Aloqa va band qilish:</strong>
+                  <span style="color: var(--accent-gold-light); font-size: 0.9rem;">+998 71 200-88-00</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+              <button class="btn btn-gold trigger-open-reservation" style="width: 100%;">
+                <span data-i18n="book_btn">Stol band qilish</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       6. CART DRAWER (Slide-over Panel)
+       ========================================================================= -->
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Savatcha">
+    <div class="cart-header">
+      <div class="cart-header-title">
+        <h3>Savatcha</h3>
+        <span class="cart-badge">0</span>
+      </div>
+      <button class="close-drawer-btn" id="closeCartBtn" aria-label="Yopish">✕</button>
+    </div>
+
+    <div class="cart-body-content" id="cartItemsList">
+      <!-- Dynamic items or empty state -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="promo-input-row">
+        <input type="text" id="promoInput" class="promo-input" placeholder="Promo-kod (LAURA20)">
+        <button class="btn btn-outline" id="btnApplyPromo"
+          style="padding: 0.6rem 1rem; font-size: 0.82rem;">Qo'llash</button>
+      </div>
+      <p id="promoMsg" style="font-size: 0.78rem; margin-top: -0.6rem; margin-bottom: 0.8rem; display: none;"></p>
+
+      <div class="calculation-list">
+        <div class="calc-row">
+          <span>Taomlar summasi:</span>
+          <span id="cartSubtotal">0 so'm</span>
+        </div>
+        <div class="calc-row" id="cartDiscountRow" style="display: none; color: var(--color-success);">
+          <span>Chegirma:</span>
+          <span id="cartDiscount">0 so'm</span>
+        </div>
+        <div class="calc-row">
+          <span>Yetkazib berish (300k+ bepul):</span>
+          <span id="cartDelivery">0 so'm</span>
+        </div>
+        <div class="calc-row" id="cartCaloriesRow">
+          <span>🔥 Jami energetik quvvat:</span>
+          <span id="cartCalories" style="color: var(--accent-orange); font-weight: 700;">0 kkal</span>
+        </div>
+        <div class="calc-row total-row">
+          <span>Jami to'lov:</span>
+          <span class="total-amount" id="cartTotal">0 so'm</span>
+        </div>
+      </div>
+
+      <button class="btn btn-gold" id="btnProceedCheckout" style="width: 100%;" disabled>
+        <span>Buyurtmani rasmiylashtirish</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       7. DISH CUSTOMIZATION MODAL
+       ========================================================================= -->
+  <div class="modal-backdrop" id="dishModal">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" id="dishModalClose">✕</button>
+      <div id="dishModalContent">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       8. CHECKOUT MODAL
+       ========================================================================= -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <button class="modal-close-btn" id="checkoutModalClose">✕</button>
+      <div style="padding: 2rem;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 0.4rem; color: #fff;">Buyurtmani Rasmiylashtirish</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">Ma'lumotlaringizni kiriting va
+          to'lov usulini tanlang</p>
+
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label class="form-label">Buyurtma turi:</label>
+            <div class="radio-pills">
+              <div class="radio-pill-item">
+                <input type="radio" name="checkoutOrderType" id="typeDelivery" value="delivery" checked>
+                <label for="typeDelivery" class="radio-pill-label">🛵 Manzilga yetkazish</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="checkoutOrderType" id="typeDineIn" value="dinein">
+                <label for="typeDineIn" class="radio-pill-label">🍽️ Restoranda / Olib ketish</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ismingiz:</label>
+            <input type="text" class="form-control" required placeholder="Masalan: Asadulloh">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Telefon raqamingiz (Faqat O'zbekiston raqamlari):</label>
+            <div style="position: relative;">
+              <input type="tel" id="checkoutPhone" class="form-control" required placeholder="+998 (90) 123-45-67" maxlength="19" autocomplete="tel">
+              <span id="phoneValidationIcon" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none;">🇺🇿</span>
+            </div>
+            <small style="color: var(--text-dim); font-size: 0.76rem; display: block; margin-top: 0.35rem;">Format: +998 (XX) XXX-XX-XX</small>
+          </div>
+
+          <div class="form-group" id="checkoutAddressGroup">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 0.4rem;">
+              <label class="form-label" style="margin-bottom: 0;">Yetkazib berish manzili:</label>
+              <div style="display: flex; gap: 0.4rem;">
+                <button type="button" id="btnGetLocation" class="btn btn-outline" style="padding: 0.3rem 0.65rem; font-size: 0.76rem; border-color: rgba(212,175,55,0.5); color: var(--accent-gold);">
+                  📍 Mening joylashuvim
+                </button>
+                <button type="button" id="btnToggleMap" class="btn btn-outline" style="padding: 0.3rem 0.65rem; font-size: 0.76rem; border-color: var(--border-subtle); color: var(--text-secondary);">
+                  🗺 Xaritani ko'rsatish
+                </button>
+              </div>
+            </div>
+
+            <div style="position: relative;">
+              <input type="text" id="checkoutAddress" class="form-control" placeholder="Tuman, ko'cha, uy yoki xaritadan tanlang..." style="padding-right: 2.2rem;">
+              <span id="addressLoading" style="display: none; position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem;">⏳</span>
+            </div>
+
+            <!-- Interaktiv Xarita (Leaflet / OpenStreetMap / Google Maps koordinatalari) -->
+            <div id="checkoutMapContainer" style="display: none; margin-top: 0.75rem; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-gold); background: #0c0d12;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0.8rem; background: rgba(212, 175, 55, 0.08); font-size: 0.76rem; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle);">
+                <span>📍 Xaritada joyni bosing yoki belgini kerakli manzilga torting</span>
+                <span id="mapCoordsBadge" style="color: var(--accent-gold); font-family: monospace; font-size: 0.72rem;">Toshkent</span>
+              </div>
+              <div id="checkoutMap" style="height: 190px; width: 100%; z-index: 1;"></div>
+            </div>
+
+            <input type="hidden" id="checkoutLat" name="latitude">
+            <input type="hidden" id="checkoutLng" name="longitude">
+          </div>
+
+          <div class="form-group" id="checkoutTableGroup" style="display: none;">
+            <label class="form-label">Stol raqamingiz (agar restoranda bo'lsangiz):</label>
+            <input type="text" class="form-control" placeholder="Masalan: Stol #7">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">To'lov turi:</label>
+            <div class="radio-pills" style="grid-template-columns: 1fr 1fr;">
+              <div class="radio-pill-item">
+                <input type="radio" name="payMethod" id="payCash" value="cash" checked>
+                <label for="payCash" class="radio-pill-label">💵 Naqd pul</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="payMethod" id="payCard" value="card">
+                <label for="payCard" class="radio-pill-label">💳 Karta / Terminal orqali</label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.2rem; margin: 1.5rem 0;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 0.8rem; color: #fff;">Buyurtma tarkibi:</h4>
+            <div id="checkoutSummaryList"></div>
+            <div
+              style="display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--border-subtle); font-weight: 800;">
+              <span>Yakuniy to'lov:</span>
+              <span id="checkoutFinalTotal" style="color: var(--accent-gold); font-size: 1.25rem;">0 so'm</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width: 100%;">
+            <span>Buyurtmani tasdiqlash</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       9. ORDER CONFIRMATION & TRACKING MODAL
+       ========================================================================= -->
+  <div class="modal-backdrop" id="orderSuccessModal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <button class="modal-close-btn" id="orderSuccessClose">✕</button>
+      <div class="receipt-header">
+        <div class="receipt-icon-circle">✓</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.3rem;">Buyurtma Qabul Qilindi!</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          Buyurtma raqami: <strong id="successOrderId" style="color: var(--accent-gold);">#LA-0000</strong>
+        </p>
+
+        <div class="order-progress-stepper">
+          <div class="step-node completed">
+            <div class="step-dot">✓</div>
+            <span class="step-text">Qabul qilindi</span>
+          </div>
+          <div class="step-node active">
+            <div class="step-dot">🍳</div>
+            <span class="step-text">Tayyorlanmoqda</span>
+          </div>
+          <div class="step-node">
+            <div class="step-dot">🛵</div>
+            <span class="step-text">Yetkazilmoqda</span>
+          </div>
+        </div>
+
+        <div
+          style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--border-gold); border-radius: var(--radius-md); padding: 1.2rem; text-align: left; margin: 1.5rem 0;">
+          <h4 style="font-size: 0.95rem; color: var(--accent-gold-light); margin-bottom: 0.4rem;">Taxminiy yetkazish
+            vaqti:</h4>
+          <p style="font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 0.2rem;">25 - 35 daqiqa</p>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">Restoran oshpazi taomingizni tayyorlashni boshladi.
+            Kuryer jo'nashi bilan SMS xabarnoma olasiz.</p>
+        </div>
+
+        <button class="btn btn-gold" id="orderSuccessDoneBtn"
+          onclick="document.getElementById('orderSuccessModal').classList.remove('open');" style="width: 100%;">
+          <span>Ajoyib, rahmat!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       10. TABLE RESERVATION MODAL
+       ========================================================================= -->
+  <div class="modal-backdrop" id="reservationModal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <button class="modal-close-btn" id="reservationModalClose">✕</button>
+      <div style="padding: 2rem;">
+        <h2 style="font-size: 1.6rem; margin-bottom: 0.4rem; color: #fff;">Stol Band Qilish</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">Sana, vaqt va mehmonga
+          mo'ljallangan qulay joyni tanlang</p>
+
+        <form id="reservationForm">
+          <div class="form-group">
+            <label class="form-label">Ism va Familiyangiz:</label>
+            <input type="text" class="form-control" required placeholder="Masalan: Jamshid Aliyev">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Telefon raqamingiz (Faqat O'zbekiston raqamlari):</label>
+            <input type="tel" id="reservationPhone" class="form-control" required placeholder="+998 (90) 123-45-67" maxlength="19" autocomplete="tel">
+            <small style="color: var(--text-dim); font-size: 0.76rem; display: block; margin-top: 0.35rem;">Format: +998 (XX) XXX-XX-XX</small>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Sana:</label>
+              <input type="date" class="form-control" required value="2026-09-24">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Vaqt:</label>
+              <input type="time" class="form-control" required value="19:30">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mehmonlar soni:</label>
+            <div class="radio-pills">
+              <div class="radio-pill-item">
+                <input type="radio" name="guestCount" id="g1" value="2" checked>
+                <label for="g1" class="radio-pill-label">2 kishi</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="guestCount" id="g2" value="4">
+                <label for="g2" class="radio-pill-label">4 kishi</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="guestCount" id="g3" value="6">
+                <label for="g3" class="radio-pill-label">6 kishi</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="guestCount" id="g4" value="8+">
+                <label for="g4" class="radio-pill-label">8+ kishi</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Joylashuv afzalligi:</label>
+            <div class="radio-pills">
+              <div class="radio-pill-item">
+                <input type="radio" name="zone" id="z1" value="main" checked>
+                <label for="z1" class="radio-pill-label">Asosiy zal</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="zone" id="z2" value="terrace">
+                <label for="z2" class="radio-pill-label">Panoramik ayvon</label>
+              </div>
+              <div class="radio-pill-item">
+                <input type="radio" name="zone" id="z3" value="vip">
+                <label for="z3" class="radio-pill-label">VIP xona</label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 1rem;">
+            <span>Bandlikni tasdiqlash</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       11. FOOTER (r1 Styled)
+       ========================================================================= -->
+  <footer class="site-footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="brand-logo" style="margin-bottom: 1.2rem;">
+            <div class="logo-monogram">L</div>
+            <div class="logo-text-group">
+              <span class="logo-title">L'AURA</span>
+              <span class="logo-subtitle">Haute Gastronomy</span>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; max-width: 320px;">
+            Yuksak gastronomik taomlar, oliy toifali go'sht mahsulotlari va unutilmas shahar manzarasi.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Kategoriyalar</h4>
+          <ul class="footer-links">
+            <li><a href="#menuSection">Go'sht & Gril Steyklari</a></li>
+            <li><a href="#menuSection">Dengiz Marvaridlari</a></li>
+            <li><a href="#menuSection">Qo'lda Yoyilgan Pastalar</a></li>
+            <li><a href="#menuSection">Mualliflik Desertlari</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Xizmatlar</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="trigger-open-reservation">Stol band qilish</a></li>
+            <li><a href="#" class="trigger-open-cart">Tezkor yetkazib berish</a></li>
+            <li><a href="#">Banket va korporativlar</a></li>
+            <li><a href="#">VIP Xonalar</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Aloqa & Manzil</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.5rem;">
+            Toshkent, Amir Temur shoh ko'chasi, 88
+          </p>
+          <p style="color: var(--accent-gold); font-weight: 700; margin-bottom: 0.5rem;">
+            +998 71 200-88-00
+          </p>
+          <p style="color: var(--text-dim); font-size: 0.8rem;">
+            Har kuni: 11:00 - 23:30
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 L'Aura Gastronomy Restaurant. Barcha huquqlar himoyalangan.</p>
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+          <a href="#" id="btnOpenTelegramSettings" style="color: var(--accent-gold); text-decoration: none; font-size: 0.82rem; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--border-gold); padding: 0.3rem 0.8rem; border-radius: var(--radius-full); transition: all 0.2s;">⚙️ Telegram Bot Sozlamalari</a>
+          <p style="color: var(--accent-gold);">100% Halol Sertifikatlangan</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       12. TELEGRAM BOT SOZLAMALARI MODALI
+       ========================================================================= -->
+  <div class="modal-backdrop" id="telegramSettingsModal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <button class="modal-close-btn" id="telegramSettingsClose">✕</button>
+      <div style="padding: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 0.3rem; color: #fff;">⚙️ Telegram Bot Sozlamalari</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.4rem; line-height: 1.5;">
+          Buyurtmalar va stol bandliklari to'g'ridan-to'g'ri Telegram guruhingizga tushishi uchun bot ma'lumotlarini kiriting:
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">Telegram Bot Token (@BotFather dan):</label>
+          <input type="text" id="tgBotToken" class="form-control" placeholder="Masalan: 7864195159:AAH_...">
+          <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 0.3rem;">Telegramda @BotFather ga kirib /newbot orqali olinadi.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Guruh Chat ID raqami:</label>
+          <input type="text" id="tgChatId" class="form-control" placeholder="Masalan: -1001234567890">
+          <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 0.3rem;">Botni guruhingizga qo'shib admin qiling, so'ng guruh ID sini kiriting.</small>
+        </div>
+
+        <div id="tgStatusMsg" style="display: none; padding: 0.8rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 1.2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass);"></div>
+
+        <div style="display: flex; gap: 0.8rem; margin-top: 1.2rem;">
+          <button type="button" class="btn btn-outline" id="btnTestTgSettings" style="flex: 1;">
+            Test Xabar Yuborish
+          </button>
+          <button type="button" class="btn btn-gold" id="btnSaveTgSettings" style="flex: 1;">
+            Saqlash
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MOBILE BOTTOM FLOATING BAR (Gadjetlar uchun qulay pastki menyu)
+       ========================================================================= -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobil navigatsiya">
+    <a href="#hero" class="mobile-nav-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>Asosiy</span>
+    </a>
+    <a href="#signatureShowcase" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+      <span>Oshpaz</span>
+    </a>
+    <a href="#menuSection" class="mobile-nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+        <line x1="6" y1="1" x2="6" y2="4"></line>
+        <line x1="10" y1="1" x2="10" y2="4"></line>
+        <line x1="14" y1="1" x2="14" y2="4"></line>
+      </svg>
+      <span>Menyu</span>
+    </a>
+    <button class="mobile-nav-item trigger-open-cart" type="button" aria-label="Savatcha">
+      <div style="position: relative; display: inline-flex;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" style="display: none; top: -6px; right: -8px;">0</span>
+      </div>
+      <span>Savatcha</span>
+    </button>
+    <button class="mobile-nav-item trigger-open-reservation" type="button" aria-label="Stol band qilish">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <span>Band qilish</span>
+    </button>
+  </nav>
+
+  <!-- Leaflet Map Library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Scripts -->
+  <script src="./js/translations.js"></script>
+  <script src="./js/data.js"></script>
+  <script src="./js/cart.js"></script>
+  <script src="./js/telegram.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+
+</html>
