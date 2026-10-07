@@ -4,22 +4,50 @@
    ========================================================================== */
 
 const TELEGRAM_CONFIG = {
-  // Standart sozlamalar (Agar veb-interfeysdan kiritilsa, localStorage ustun bo'ladi)
-  BOT_TOKEN: "8983975907:AAH-qZdMq0YaZw5sTZiqTFMJfcfO9GwgPCY",
-  CHAT_ID: "-1004434019921"
+  // XAVFSIZLIK: Bot tokeni ochiq kodda saqlanmaydi!
+  // Sayt Vercel/Serverga deploy qilinganda token .env fayli orqali serverless API (/api/telegram) da xavfsiz ishlaydi.
+  // Lokal ishlab chiqish uchun brauzerning 'Telegram Bot Sozlamalari' modali orqali kiritish mumkin.
+  BOT_TOKEN: "",
+  CHAT_ID: ""
 };
 
 /**
  * Telegram guruhga xabar yuborish
+ * Birinchi navbatda xavfsiz Serverless API (/api/telegram) orqali yuboradi,
+ * agar mavjud bo'lmasa (lokal rejimda), localStorage sozlamalari orqali yuboradi.
  */
 async function sendTelegramMessage(text) {
+  // 1. Birinchi navbatda xavfsiz Serverless API (/api/telegram) orqali yuborishga harakat qilish
+  try {
+    const apiResponse = await fetch('/api/telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, parse_mode: 'HTML' })
+    });
+
+    if (apiResponse.ok) {
+      const result = await apiResponse.json();
+      if (result.success) {
+        return { success: true, data: result };
+      }
+    }
+  } catch (apiErr) {
+    // Agar lokal muhitda serverless endpoint mavjud bo'lmasa (masalan, Live Server), fallback rejimiga o'tadi
+    console.warn("ℹ️ Serverless endpoint (/api/telegram) topilmadi yoki xatolik berdi. Fallback rejimiga o'tilmoqda...", apiErr);
+  }
+
+  // 2. Fallback: Brauzerdagi localStorage sozlamalari orqali to'g'ridan-to'g'ri Telegram API ga yuborish
   const token = TELEGRAM_CONFIG.BOT_TOKEN || localStorage.getItem('laura_telegram_token');
   const chatId = TELEGRAM_CONFIG.CHAT_ID || localStorage.getItem('laura_telegram_chat_id');
 
   // Agar bot token yoki chat ID hali kiritilmagan bo'lsa
   if (!token || !chatId) {
-    console.warn("⚠️ [Telegram Bot]: Bot Token yoki Chat ID kiritilmagan. Saytdagi 'Telegram Bot Sozlamalari' tugmasi orqali kiriting.");
-    return { success: false, reason: "NOT_CONFIGURED" };
+    console.warn("⚠️ [Telegram Bot]: Bot Token yoki Chat ID topilmadi. .env faylini yoki saytdagi 'Telegram Bot Sozlamalari'ni tekshiring.");
+    return { 
+      success: false, 
+      reason: "NOT_CONFIGURED",
+      error: "Telegram Bot Token yoki Chat ID sozlanmagan. Iltimos, Vercel Environment Variables yoki sayt sozlamalari orqali kiriting." 
+    };
   }
 
   const url = `https://api.telegram.org/bot${token}/sendMessage`;

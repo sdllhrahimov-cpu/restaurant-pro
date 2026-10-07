@@ -40,14 +40,15 @@ Guruh ID raqamini bilish juda oson:
 4. **"Test Xabar Yuborish"** tugmasini bosing — guruhingizga test xabar borsa, demak hammasi to'g'ri ulangan!
 5. **"Saqlash"** tugmasini bosing.
 
-#### 2-usul: Kod orqali (`js/telegram.js` faylida):
-`js/telegram.js` faylini ochib, eng yuqori qismidagi ma'lumotlarni o'zgartirishingiz ham mumkin:
-```javascript
-const TELEGRAM_CONFIG = {
-  BOT_TOKEN: "SIZNING_BOT_TOKENINGIZ", 
-  CHAT_ID: "-100SIZNING_GURUH_IDINGIZ"
-};
+#### 2-usul: `.env` fayli yoki Vercel Environment Variables orqali (Tavsiya etiladigan, xavfsiz usul):
+1. Loyiha papkasida `.env` faylini oching (yoki `.env.example` dan nusxa oling).
+2. Quyidagi parametrlarni o'rnating:
+```env
+TELEGRAM_BOT_TOKEN=8998942580:AAFZgw8HlUzr0k9fXB7HgN1o3Z65qvvspN8
+TELEGRAM_CHAT_ID=-1004434019921
 ```
+3. Vercel ga joylanganda: Vercel Dashboard -> **Settings** -> **Environment Variables** bo'limiga `TELEGRAM_BOT_TOKEN` va `TELEGRAM_CHAT_ID` ni qo'shing.
+4. Bu usulda sizning bot tokeningiz GitHubga chiqib ketmaydi va xavfsiz serverless API (`/api/telegram`) orqali ishlaydi.
 
 ---
 

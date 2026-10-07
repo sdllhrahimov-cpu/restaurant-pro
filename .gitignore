@@ -1,0 +1,21 @@
+# Muhit o'zgaruvchilari (Maxfiy kalitlar va tokenlar)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Paket menejerlari va kutubxonalar
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Deploy va build keshlar
+.vercel/
+dist/
+build/
+
+# Tizim fayllari
+.DS_Store
+Thumbs.db
+Desktop.ini
