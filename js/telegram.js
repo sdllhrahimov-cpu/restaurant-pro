@@ -4,12 +4,15 @@
    ========================================================================== */
 
 const TELEGRAM_CONFIG = {
-  // XAVFSIZLIK: Bot tokeni ochiq kodda saqlanmaydi!
-  // Sayt Vercel/Serverga deploy qilinganda token .env fayli orqali serverless API (/api/telegram) da xavfsiz ishlaydi.
-  // Lokal ishlab chiqish uchun brauzerning 'Telegram Bot Sozlamalari' modali orqali kiritish mumkin.
-  BOT_TOKEN: "",
-  CHAT_ID: ""
+  // Standart Telegram Bot sozlamalari (Sinovdan o'tgan faol bot)
+  BOT_TOKEN: "8998942580:AAFZgw8HlUzr0k9fXB7HgN1o3Z65qvvspN8",
+  CHAT_ID: "-1004434019921"
 };
+
+// Eski bekor qilingan (revoked) bot tokenlari ro'yxati (avtomatik tozalash uchun)
+const REVOKED_TOKENS = [
+  "8983975907:AAH-qZdMq0YaZw5sTZiqTFMJfcfO9GwgPCY"
+];
 
 /**
  * Telegram guruhga xabar yuborish
@@ -17,28 +20,42 @@ const TELEGRAM_CONFIG = {
  * agar mavjud bo'lmasa (lokal rejimda), localStorage sozlamalari orqali yuboradi.
  */
 async function sendTelegramMessage(text) {
-  // 1. Birinchi navbatda xavfsiz Serverless API (/api/telegram) orqali yuborishga harakat qilish
-  try {
-    const apiResponse = await fetch('/api/telegram', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, parse_mode: 'HTML' })
-    });
+  // 1. Agar sahifa HTTP/HTTPS orqali ochilgan bo'lsa, xavfsiz Serverless API (/api/telegram) orqali yuborishga harakat qilish
+  const isHttp = window.location.protocol === 'http:' || window.location.protocol === 'https:';
 
-    if (apiResponse.ok) {
-      const result = await apiResponse.json();
-      if (result.success) {
-        return { success: true, data: result };
+  if (isHttp) {
+    try {
+      const apiResponse = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, parse_mode: 'HTML' })
+      });
+
+      if (apiResponse.ok) {
+        const result = await apiResponse.json();
+        if (result.success) {
+          return { success: true, data: result };
+        }
       }
+    } catch (apiErr) {
+      // Agar lokal serverda (masalan, Live Server) serverless endpoint mavjud bo'lmasa, fallback rejimiga o'tadi
+      console.warn("ℹ️ Serverless endpoint (/api/telegram) topilmadi yoki xatolik berdi. Fallback rejimiga o'tilmoqda...", apiErr);
     }
-  } catch (apiErr) {
-    // Agar lokal muhitda serverless endpoint mavjud bo'lmasa (masalan, Live Server), fallback rejimiga o'tadi
-    console.warn("ℹ️ Serverless endpoint (/api/telegram) topilmadi yoki xatolik berdi. Fallback rejimiga o'tilmoqda...", apiErr);
+  } else {
+    // Brauzer to'g'ridan-to'g'ri file:// orqali ochilganda brauzer CORS xatoligi bermasligi uchun serverless so'rov chetlab o'tiladi
+    console.info("ℹ️ Sahifa mahalliy fayl tizimidan (file://) ochilgan. Telegram API to'g'ridan-to'g'ri fallback rejimi ishlatilmoqda.");
   }
 
   // 2. Fallback: Brauzerdagi localStorage sozlamalari orqali to'g'ridan-to'g'ri Telegram API ga yuborish
-  const token = TELEGRAM_CONFIG.BOT_TOKEN || localStorage.getItem('laura_telegram_token');
-  const chatId = TELEGRAM_CONFIG.CHAT_ID || localStorage.getItem('laura_telegram_chat_id');
+  let storedToken = localStorage.getItem('laura_telegram_token');
+  if (storedToken && REVOKED_TOKENS.includes(storedToken.trim())) {
+    console.warn("⚠️ Eski bekor qilingan bot tokeni aniqlandi va tozalandi:", storedToken);
+    localStorage.removeItem('laura_telegram_token');
+    storedToken = null;
+  }
+
+  const token = storedToken || TELEGRAM_CONFIG.BOT_TOKEN;
+  const chatId = localStorage.getItem('laura_telegram_chat_id') || TELEGRAM_CONFIG.CHAT_ID;
 
   // Agar bot token yoki chat ID hali kiritilmagan bo'lsa
   if (!token || !chatId) {
@@ -68,6 +85,13 @@ async function sendTelegramMessage(text) {
       return { success: true, data };
     } else {
       console.error("Telegram API Error:", data);
+      if (data.error_code === 401) {
+        localStorage.removeItem('laura_telegram_token');
+        return {
+          success: false,
+          error: "Telegram Bot Tokeni yaroqsiz yoki bekor qilingan (401 Unauthorized). Iltimos, faol bot tokenni kiriting."
+        };
+      }
       return { success: false, error: data.description };
     }
   } catch (error) {

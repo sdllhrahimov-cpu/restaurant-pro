@@ -1283,8 +1283,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openTelegramBtn && telegramModal) {
     openTelegramBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (tokenInput) tokenInput.value = localStorage.getItem('laura_telegram_token') || '';
-      if (chatIdInput) chatIdInput.value = localStorage.getItem('laura_telegram_chat_id') || '';
+      const currentStoredToken = localStorage.getItem('laura_telegram_token');
+      if (currentStoredToken && currentStoredToken.includes('wgPCY')) {
+        localStorage.removeItem('laura_telegram_token');
+      }
+
+      const activeToken = localStorage.getItem('laura_telegram_token') || window.restaurantTelegram?.config?.BOT_TOKEN || '';
+      const activeChatId = localStorage.getItem('laura_telegram_chat_id') || window.restaurantTelegram?.config?.CHAT_ID || '';
+
+      if (tokenInput) tokenInput.value = activeToken;
+      if (chatIdInput) chatIdInput.value = activeChatId;
       if (tgStatusMsg) tgStatusMsg.style.display = 'none';
       telegramModal.classList.add('open');
     });
