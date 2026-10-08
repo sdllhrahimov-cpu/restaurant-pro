@@ -15,9 +15,9 @@ export default async function handler(req, res) {
     });
   }
 
-  // Muhit o'zgaruvchilarini (.env) olish
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  // Muhit o'zgaruvchilarini (.env) olish yoki faol zaxira qiymatlaridan foydalanish
+  const token = process.env.TELEGRAM_BOT_TOKEN || "8998942580:AAFZgw8HlUzr0k9fXB7HgN1o3Z65qvvspN8";
+  const chatId = process.env.TELEGRAM_CHAT_ID || "-1004434019921";
 
   if (!token || !chatId) {
     console.error("Xatolik: Serverda TELEGRAM_BOT_TOKEN yoki TELEGRAM_CHAT_ID sozlanmagan.");
